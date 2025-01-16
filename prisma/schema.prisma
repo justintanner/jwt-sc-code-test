@@ -1,0 +1,64 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = "file:./dev.db"
+}
+
+model Warehouse {
+  id    Int    @id @default(autoincrement())
+  name  String
+  lat   Float
+  lng   Float
+  stock Int
+
+  Shipment Shipment[]
+}
+
+model Device {
+  id        Int     @id @default(autoincrement())
+  name      String
+  price     Decimal
+  kilograms Float
+
+  DeviceDiscount DeviceDiscount[]
+  Order          Order[]
+}
+
+model DeviceDiscount {
+  id       Int     @id @default(autoincrement())
+  units    Int
+  rate     Decimal
+  device   Device  @relation(fields: [deviceId], references: [id])
+  deviceId Int
+
+  @@index([deviceId])
+}
+
+model Order {
+  id           Int     @id @default(autoincrement())
+  lat          Float
+  lng          Float
+  quantity     Int
+  totalPrice   Decimal
+  shippingCost Decimal
+  discount     Decimal
+  device       Device  @relation(fields: [deviceId], references: [id])
+  deviceId     Int
+
+  Shipment Shipment[]
+
+  @@index([deviceId])
+}
+
+model Shipment {
+  id          Int       @id @default(autoincrement())
+  order       Order     @relation(fields: [orderId], references: [id])
+  orderId     Int
+  warehouse   Warehouse @relation(fields: [warehouseId], references: [id])
+  warehouseId Int
+  units       Int
+  cost        Decimal
+}
