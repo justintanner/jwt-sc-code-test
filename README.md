@@ -1,5 +1,7 @@
 # Justin Tanner's code test for ScreenCloud
 
+![Tests](https://github.com/justintanner/jwt-sc-code-test/actions/workflows/test.yml/badge.svg)
+
 This was a fun code test, I learned about Prisma and was impressed with big.js.
 
 ### Prerequisites
